@@ -7,11 +7,15 @@ void save_ppm_file(int pixels[], int pixels_size, int stride)
 	FILE *out_put = fopen("output.ppm", "w");
 	fprintf(out_put, "P3\n%i %i 255\n", w, h);
 	int r, g, b;
+	
+	unsigned char * pix = (unsigned char*) pixels;
+	
 	for (int i = 0; i < pixels_size; i++) {
-		r = pixels[i] << (8 * 2) & 0xFF;
-		g = pixels[i] << (8 * 1) & 0xFF;
-		b = pixels[i] << (8 * 0) & 0xFF;
-		fprintf(out_put, "%d %d %d  ", r, g, b);
+		r = pix[0];
+		g = pix[1];
+		b = pix[2];
+		fprintf(out_put, "%u %u %u  ", r, g, b);
+		pix+=4;
 	}
 }
 
