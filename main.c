@@ -1,15 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
 
-// TODO(jan): Maybe
-// typedef struct {
-// 	int r, g, b;
-// 
-// } rgb;
-//
-//
-
-
 void save_ppm_file(int pixels[], int pixels_size, int stride)
 {
 	int w = stride;
