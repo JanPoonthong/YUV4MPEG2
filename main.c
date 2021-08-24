@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ctype.h>
 
 // TODO(jan): Maybe
 // typedef struct {
@@ -8,16 +9,6 @@
 //
 //
 
-int buffer[3];
-const int buffer_size = sizeof(buffer) / sizeof(buffer[0]);
-
-void make_rgb(int r, int g, int b, int buffer[])
-{
-
-	buffer[0] = r;
-	buffer[1] = g;
-	buffer[2] = b;
-}
 
 void save_ppm_file(int pixels[], int pixels_size, int stride)
 {
@@ -25,20 +16,17 @@ void save_ppm_file(int pixels[], int pixels_size, int stride)
 	int h = pixels_size / stride;
 	FILE *out_put = fopen("output.ppm", "w");
 	int r, g, b;
+	const int buffer_size = 3;
 
 	fprintf(out_put, "P6\n%i %i 255\n", w, h);
 	for (int i = 0; i < pixels_size; i++) {
-		r = pixels[i] >> (8 * 2) & 0xFF;
-		g = pixels[i] >> (8 * 1) & 0xFF;
-		b = pixels[i] >> (8 * 0) & 0xFF;
-		make_rgb(r, g, b, buffer);
-		for (int i = 0; i < buffer_size; i++) {
-			fwrite(&buffer[i], 1, 1, out_put);
-
-		}
+		  char buffer[] = {
+                  pixels[i] >> (8 * 2) & 0xFF,
+                  pixels[i] >> (8 * 1) & 0xFF,
+                  pixels[i] >> (8 * 0) & 0xFF,
+                };
+		fwrite(buffer, 1, buffer_size, out_put);
 	}
-	fwrite(&buffer, 1, 1, out_put);
-
 }
 
 int main(void) 
