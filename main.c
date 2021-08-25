@@ -19,6 +19,19 @@ void save_ppm_file(int pixels[], int pixels_size, int stride)
 	}
 }
 
+void uv_gradient_pattern(int HEIGHT, int WIDTH, int pixels[])
+{
+	for (int y = 0; y < HEIGHT; y++) {
+		for (int x = 0; x < WIDTH; x++) {
+			float u = (float) x / WIDTH;
+			float v = (float) y / HEIGHT;
+			int r = u * 255;
+			int g = v * 255;
+			pixels[y * WIDTH + x] = (r << 8 * 2) | (g << 8 * 1);
+		}
+	}
+}
+
 void assign_background_color(int COLOR, int pixels[], int pixels_size)
 {
 	for (int i = 0; i < pixels_size; i++) {
@@ -35,18 +48,7 @@ int main(void)
 	int pixels_size  = WIDTH * HEIGHT;
 
 	assign_background_color(COLOR, pixels, pixels_size);
-	// uv_gradient_pattern(HEIGHT, WIDTH, pixels);
-	for (int y = 0; y < HEIGHT; y++) {
-		for (int x = 0; x < WIDTH; x++) {
-			float u = x / WIDTH;
-			float v = y / HEIGHT;
-			printf("%d %d\n", u, v);
-			int r = u * 255;
-			int g = v * 255;
-			// printf("%d %d\n", r, g);
-			pixels[y * WIDTH + x] = (r << 8 * 2) | (g << 8 * 1);
-		}
-	}
+	uv_gradient_pattern(HEIGHT, WIDTH, pixels);
 
 	save_ppm_file(pixels, pixels_size, WIDTH);
 }
