@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <ctype.h>
 
 void save_ppm_file(int pixels[], int pixels_size, int stride)
 {
@@ -11,12 +10,19 @@ void save_ppm_file(int pixels[], int pixels_size, int stride)
 
 	fprintf(out_put, "P6\n%i %i 255\n", w, h);
 	for (int i = 0; i < pixels_size; i++) {
-		  char buffer[] = {
-                  pixels[i] >> (8 * 2) & 0xFF,
-                  pixels[i] >> (8 * 1) & 0xFF,
-                  pixels[i] >> (8 * 0) & 0xFF,
-                };
+		char buffer[] = {
+			pixels[i] >> (8 * 2) & 0xFF,
+			pixels[i] >> (8 * 1) & 0xFF,
+			pixels[i] >> (8 * 0) & 0xFF,
+		};
 		fwrite(buffer, 1, buffer_size, out_put);
+	}
+}
+
+void assign_background_color(int COLOR, int pixels[], int pixels_size)
+{
+	for (int i = 0; i < pixels_size; i++) {
+		pixels[i] = COLOR;
 	}
 }
 
@@ -26,11 +32,8 @@ int main(void)
 	const int WIDTH  = 200;
 	const int HEIGHT = 200;
 	int pixels[WIDTH * HEIGHT];
+	int pixels_size  = WIDTH * HEIGHT;
 
-	int pixels_size  = sizeof(pixels) / sizeof(pixels[0]);
-	for (int i = 0; i < pixels_size; i++) {
-		pixels[i] = COLOR;
-	}
-
+	assign_background_color(COLOR, pixels, pixels_size);
 	save_ppm_file(pixels, pixels_size, WIDTH);
 }
