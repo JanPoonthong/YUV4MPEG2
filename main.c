@@ -41,6 +41,14 @@ void assign_background_color(int COLOR, int pixels[], int pixels_size)
 	}
 }
 
+void generate_yuvmpeg(int stride, int pixels_size)
+{
+	int w = stride;
+	int h = pixels_size / stride;
+	FILE *out_put = fopen("output.y4m", "w");
+	fprintf(out_put, "YUV4MPEG2 W%d H%d", w, h);
+}
+
 int main(void) 
 {
 	int COLOR        = 0x00FFFF;
@@ -50,7 +58,8 @@ int main(void)
 	int pixels_size  = WIDTH * HEIGHT;
 
 	assign_background_color(COLOR, pixels, pixels_size);
-	uv_gradient_pattern(WIDTH, pixels, pixels_size);
+	generate_yuvmpeg(WIDTH, pixels_size);
+	// uv_gradient_pattern(WIDTH, pixels, pixels_size);
 
-	save_ppm_file(pixels, pixels_size, WIDTH);
+	// save_ppm_file(pixels, pixels_size, WIDTH);
 }
