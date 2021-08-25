@@ -29,11 +29,24 @@ void assign_background_color(int COLOR, int pixels[], int pixels_size)
 int main(void) 
 {
 	int COLOR        = 0x00FFFF;
-	const int WIDTH  = 200;
-	const int HEIGHT = 200;
+	const int WIDTH  = 500;
+	const int HEIGHT = 500;
 	int pixels[WIDTH * HEIGHT];
 	int pixels_size  = WIDTH * HEIGHT;
 
 	assign_background_color(COLOR, pixels, pixels_size);
+	// uv_gradient_pattern(HEIGHT, WIDTH, pixels);
+	for (int y = 0; y < HEIGHT; y++) {
+		for (int x = 0; x < WIDTH; x++) {
+			float u = x / WIDTH;
+			float v = y / HEIGHT;
+			printf("%d %d\n", u, v);
+			int r = u * 255;
+			int g = v * 255;
+			// printf("%d %d\n", r, g);
+			pixels[y * WIDTH + x] = (r << 8 * 2) | (g << 8 * 1);
+		}
+	}
+
 	save_ppm_file(pixels, pixels_size, WIDTH);
 }
