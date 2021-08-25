@@ -45,8 +45,9 @@ void generate_yuvmpeg(int stride, int pixels_size)
 {
 	int w = stride;
 	int h = pixels_size / stride;
+	int fps = 30;
 	FILE *out_put = fopen("output.y4m", "w");
-	fprintf(out_put, "YUV4MPEG2 W%d H%d", w, h);
+	fprintf(out_put, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444", w, h, fps);
 }
 
 int main(void) 
