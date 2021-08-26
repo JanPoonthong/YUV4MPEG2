@@ -17,6 +17,7 @@ void save_ppm_file(int pixels[], int pixels_size, int stride)
 		};
 		fwrite(buffer, 1, buffer_size, out_put);
 	}
+	fclose(out_put);
 }
 
 void uv_gradient_pattern(int stride, int pixels[], int pixels_size)
@@ -48,6 +49,7 @@ void generate_yuvmpeg(int stride, int pixels_size)
 	int fps = 30;
 	FILE *out_put = fopen("output.y4m", "w");
 	fprintf(out_put, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444", w, h, fps);
+	fclose(out_put);
 }
 
 int main(void) 
