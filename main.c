@@ -34,7 +34,7 @@ void uv_gradient_pattern(int stride, int pixels[], int pixels_size) {
   }
 }
 
-void assign_background_color(int pixels[], int pixels_size) {
+void assign_zero_color(int pixels[], int pixels_size) {
   for (int i = 0; i < pixels_size; i++) {
     pixels[i] = 0;
   }
@@ -72,7 +72,7 @@ int main(void) {
   int pixels[WIDTH * HEIGHT];
   int pixels_size = WIDTH * HEIGHT;
 
-  assign_background_color(pixels, pixels_size);
+  assign_zero_color(pixels, pixels_size);
   generate_yuvmpeg(WIDTH, pixels_size);
 
   // uv_gradient_pattern(WIDTH, pixels, pixels_size);
