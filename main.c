@@ -54,8 +54,16 @@ void generate_yuvmpeg(int stride, int pixels_size)
 	for (int i = 0; i < fps; i++) {
 		fprintf(out_put, "FRAME\n");
 		for (int j = 0; j < w*h; j++) {
-			char pixels[] = {76, 84, 255};;
-			fwrite(pixels, 1, 3, out_put);
+			char pixels[] = {170};
+			fwrite(pixels, 1, 1, out_put);
+		}
+		for (int j = 0; j < w*h; j++) {
+			char pixels[] = {16};
+			fwrite(pixels, 1, 1, out_put);
+		}
+		for (int j = 0; j < w*h; j++) {
+			char pixels[] = {166};
+			fwrite(pixels, 1, 1, out_put);
 		}
 	}
 
