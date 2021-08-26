@@ -17,6 +17,7 @@ void save_ppm_file(int pixels[], int pixels_size, int stride)
 		};
 		fwrite(buffer, 1, buffer_size, out_put);
 	}
+
 	fclose(out_put);
 }
 
@@ -42,13 +43,22 @@ void assign_background_color(int COLOR, int pixels[], int pixels_size)
 	}
 }
 
-void generate_yuvmpeg(int stride, int pixels_size)
+void generate_yuvmpeg(int stride, int pixels_size, int pixels[])
 {
 	int w = stride;
 	int h = pixels_size / stride;
 	int fps = 30;
 	FILE *out_put = fopen("output.y4m", "w");
-	fprintf(out_put, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444", w, h, fps);
+	fprintf(out_put, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444\n", w, h, fps);
+
+	for (int _ = 0; _ < fps; _++) {
+		fprintf(out_put, "FRAME\n");
+		for (int _ = 0; _ < w*h; _++) {
+			int pixels[] = {0xFF0000};
+			fwrite(pixels, 1, 1, out_put);
+		}
+	}
+
 	fclose(out_put);
 }
 
@@ -61,8 +71,8 @@ int main(void)
 	int pixels_size  = WIDTH * HEIGHT;
 
 	assign_background_color(COLOR, pixels, pixels_size);
-	generate_yuvmpeg(WIDTH, pixels_size);
-	// uv_gradient_pattern(WIDTH, pixels, pixels_size);
+	generate_yuvmpeg(WIDTH, pixels_size, pixels);
 
+	// uv_gradient_pattern(WIDTH, pixels, pixels_size);
 	// save_ppm_file(pixels, pixels_size, WIDTH);
 }
