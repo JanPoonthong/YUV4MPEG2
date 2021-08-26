@@ -66,10 +66,13 @@ void generate_yuvmpeg(int stride, int pixels_size) {
 }
 
 int main(void) {
-  const int WIDTH = 500;
-  const int HEIGHT = 500;
+  const int WIDTH = 800;
+  const int HEIGHT = 600;
   int pixels[WIDTH * HEIGHT];
   int pixels_size = WIDTH * HEIGHT;
+  int FPS = 30;
+  int DURATION = 1;
+  int frames_count = (FPS * DURATION);
 
   assign_zero_color(pixels, pixels_size);
   generate_yuvmpeg(WIDTH, pixels_size);
