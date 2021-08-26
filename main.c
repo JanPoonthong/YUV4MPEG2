@@ -4,7 +4,6 @@ void save_ppm_file(int pixels[], int pixels_size, int stride) {
   int w = stride;
   int h = pixels_size / stride;
   FILE *out_put = fopen("output.ppm", "w");
-  int r, g, b;
   const int buffer_size = 3;
 
   fprintf(out_put, "P6\n%i %i 255\n", w, h);
