@@ -39,28 +39,18 @@ void assign_zero_color(int pixels[], int pixels_size) {
   }
 }
 
-void generate_yuvmpeg(int stride, int pixels_size) {
+void random_pattern(int pixels[], int stride, int pixel_size, int luma)
+{
   int w = stride;
-  int h = pixels_size / stride;
-  int fps = 30;
-  FILE *out_put = fopen("output.y4m", "w");
-  fprintf(out_put, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444\n", w, h, fps);
-
-  for (int i = 0; i < fps; i++) {
-    fprintf(out_put, "FRAME\n");
-    for (int j = 0; j < w * h; j++) {
-      char pixels[] = {170};
-      fwrite(pixels, 1, 1, out_put);
-    }
-    for (int j = 0; j < w * h; j++) {
-      char pixels[] = {16};
-      fwrite(pixels, 1, 1, out_put);
-    }
-    for (int j = 0; j < w * h; j++) {
-      char pixels[] = {166};
-      fwrite(pixels, 1, 1, out_put);
+  int h = pixel_size / w;
+  for (int y = 0; y < h; y++) {
+    for (int x = 0; x < w; x++) {
+      int cb = y & 0xFF;
+      int cr = x & 0xFF;
+      pixels[y*stride+x] = (luma << (8 * 2)) | (cb << (8 * 0)) | (cr << (8 * 1));
     }
   }
+}
 
   fclose(out_put);
 }
