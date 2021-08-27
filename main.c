@@ -72,12 +72,11 @@ int main(void) {
   const int HEIGHT = 600;
   int pixels[WIDTH * HEIGHT];
   int pixels_size = WIDTH * HEIGHT;
-  int FPS = 30;
-  int DURATION = 1;
-  int frames_count = (FPS * DURATION);
+  const int FPS = 30;
+  const int DURATION = 5;
+  const int frames_count = (FPS * DURATION);
 
   assign_zero_color(pixels, pixels_size);
-  generate_yuvmpeg(WIDTH, pixels_size);
 
   // uv_gradient_pattern(WIDTH, pixels, pixels_size);
   // save_ppm_file(pixels, pixels_size, WIDTH);
