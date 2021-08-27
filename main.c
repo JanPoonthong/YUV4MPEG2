@@ -71,7 +71,7 @@ int main(void) {
   const int WIDTH = 800;
   const int HEIGHT = 600;
   int pixels[WIDTH * HEIGHT];
-  int pixels_size = WIDTH * HEIGHT;
+  const int pixels_size = WIDTH * HEIGHT;
   const int FPS = 30;
   const int DURATION = 5;
   const int frames_count = (FPS * DURATION);
