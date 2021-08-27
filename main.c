@@ -43,15 +43,15 @@ void assign_zero_color(int pixels[], int pixels_size) {
   }
 }
 
-void random_pattern(int pixels[], int stride, int pixel_size, int luma)
-{
+void random_pattern(int pixels[], int stride, int pixels_size, int luma) {
   int w = stride;
-  int h = pixel_size / w;
+  int h = pixels_size / w;
   for (int y = 0; y < h; y++) {
     for (int x = 0; x < w; x++) {
-      int cb = y & 0xFF;
-      int cr = x & 0xFF;
-      pixels[y*stride+x] = (luma << (8 * 2)) | (cb << (8 * 0)) | (cr << (8 * 1));
+      int cb = x & 0xFF;
+      int cr = y & 0xFF;
+      pixels[y * stride + x] =
+          (luma << (8 * 2)) | (cb << (8 * 0)) | (cr << (8 * 1));
     }
   }
 }
