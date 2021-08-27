@@ -52,7 +52,19 @@ void random_pattern(int pixels[], int stride, int pixel_size, int luma)
   }
 }
 
-  fclose(out_put);
+void generate_yuvmpeg(int stride, int pixels_size, int pixels[], FILE *out_put) {
+  int w = stride;
+  int h = pixels_size / stride;
+
+  fprintf(out_put, "FRAME\n");
+  for (int i = 0; i < pixels_size; i++) {
+    char ycbcr[] = {
+      (pixels[i] >> 8*2) & 0xFF, // y
+      (pixels[i] >> 8*0) & 0xFF, // cb
+      (pixels[i] >> 8*1) & 0xFF, // cr
+    };
+    fwrite(ycbcr, 1, 3, out_put);
+  }
 }
 
 int main(void) {
