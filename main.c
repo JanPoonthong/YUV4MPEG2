@@ -78,6 +78,17 @@ int main(void) {
 
   assign_zero_color(pixels, pixels_size);
 
+  FILE *out_put = fopen("output.y4m", "w");
+  fprintf(out_put, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444\n", WIDTH, HEIGHT, frames_count);
+
+  for (int j = 0; j < frames_count; j++) {
+    float luma = ((float)j / frames_count) * 255.0;
+    random_pattern(pixels, WIDTH, pixels_size, luma);
+    generate_yuvmpeg(WIDTH, pixels_size, pixels, out_put);
+  }
+
+  fclose(out_put);
+  fprintf(stdout, "Generated output.y4m\n");
   // uv_gradient_pattern(WIDTH, pixels, pixels_size);
   // save_ppm_file(pixels, pixels_size, WIDTH);
 }
