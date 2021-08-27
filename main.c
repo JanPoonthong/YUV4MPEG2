@@ -53,9 +53,6 @@ void random_pattern(int pixels[], int stride, int pixel_size, int luma)
 }
 
 void generate_yuvmpeg(int stride, int pixels_size, int pixels[], FILE *out_put) {
-  int w = stride;
-  int h = pixels_size / stride;
-
   fprintf(out_put, "FRAME\n");
   for (int i = 0; i < pixels_size; i++) {
     char ycbcr[] = {
