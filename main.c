@@ -1,5 +1,9 @@
 #include <stdio.h>
 
+typedef struct {
+  int y, cb, cr;
+} YCbCr;
+
 void save_ppm_file(int pixels[], int pixels_size, int stride) {
   int w = stride;
   int h = pixels_size / stride;
