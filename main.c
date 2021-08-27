@@ -56,16 +56,12 @@ void random_pattern(int pixels[], int stride, int pixels_size, int luma) {
   }
 }
 
-void generate_yuvmpeg(int stride, int pixels_size, int pixels[], FILE *out_put) {
-  fprintf(out_put, "FRAME\n");
-  for (int i = 0; i < pixels_size; i++) {
-    char ycbcr[] = {
-      (pixels[i] >> 8*2) & 0xFF, // y
-      (pixels[i] >> 8*0) & 0xFF, // cb
-      (pixels[i] >> 8*1) & 0xFF, // cr
-    };
-    fwrite(ycbcr, 1, 3, out_put);
-  }
+YCbCr rgb_conveter(int r, int g, int b) {
+  return (YCbCr){
+      .y = 16 + (65.738 * r + 129.057 * g + 25.064 * b) / 256,
+      .cb = 128 + (-37.945 * r - 74.494 * g + 112.439 * b) / 256,
+      .cr = 128 + (112.439 * r - 94.154 * g - 18.285 * b) / 256,
+  };
 }
 
 int main(void) {
@@ -74,22 +70,32 @@ int main(void) {
   int pixels[WIDTH * HEIGHT];
   const int pixels_size = WIDTH * HEIGHT;
   const int FPS = 30;
-  const int DURATION = 5;
+  const int DURATION = 2;
   const int frames_count = (FPS * DURATION);
 
   assign_zero_color(pixels, pixels_size);
 
   FILE *out_put = fopen("output.y4m", "w");
-  fprintf(out_put, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444\n", WIDTH, HEIGHT, frames_count);
+  fprintf(out_put, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444\n", WIDTH, HEIGHT,
+          frames_count);
 
+  YCbCr ycbcr = rgb_conveter(255, 0, 0);
   for (int j = 0; j < frames_count; j++) {
-    float luma = ((float)j / frames_count) * 255.0;
-    random_pattern(pixels, WIDTH, pixels_size, luma);
-    generate_yuvmpeg(WIDTH, pixels_size, pixels, out_put);
+    fprintf(out_put, "FRAME\n");
+    for (int j = 0; j < pixels_size; j++) {
+      char pixels[] = {ycbcr.y};
+      fwrite(pixels, 1, 1, out_put);
+    }
+    for (int j = 0; j < pixels_size; j++) {
+      char pixels[] = {ycbcr.cb};
+      fwrite(pixels, 1, 1, out_put);
+    }
+    for (int j = 0; j < pixels_size; j++) {
+      char pixels[] = {ycbcr.cr};
+      fwrite(pixels, 1, 1, out_put);
+    }
   }
 
   fclose(out_put);
   fprintf(stdout, "Generated output.y4m\n");
-  // uv_gradient_pattern(WIDTH, pixels, pixels_size);
-  // save_ppm_file(pixels, pixels_size, WIDTH);
 }
