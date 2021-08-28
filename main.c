@@ -51,7 +51,7 @@ int main(void) {
     }
 
     float progess = round((float)frame / FRAMES_COUNT * 100);
-    printf("%f%%\r", progess); // Need fprintf because of flushing the stdout
+    printf("%f%%\r", progess);
     fflush(stdout);
   }
 
