@@ -1,10 +1,17 @@
 #include <stdio.h>
 
+#define WIDTH  800
+#define HEIGHT 600
+#define FPS 30
+#define DURATION 2
+#define frames_count (FPS * DURATION)
+#define pixels_size (WIDTH * HEIGHT)
+
 typedef struct {
   int y, cb, cr;
 } YCbCr;
 
-void save_ppm_file(int pixels[], int pixels_size, int stride) {
+void save_ppm_file(int pixels[], int stride) {
   int w = stride;
   int h = pixels_size / stride;
   FILE *out_put = fopen("output.ppm", "w");
@@ -23,7 +30,7 @@ void save_ppm_file(int pixels[], int pixels_size, int stride) {
   fclose(out_put);
 }
 
-void uv_gradient_pattern(int stride, int pixels[], int pixels_size) {
+void uv_gradient_pattern(int stride, int pixels[]) {
   int width = stride;
   int height = pixels_size / stride;
   for (int y = 0; y < height; y++) {
@@ -37,13 +44,13 @@ void uv_gradient_pattern(int stride, int pixels[], int pixels_size) {
   }
 }
 
-void assign_zero_color(int pixels[], int pixels_size) {
+void assign_zero_color(int pixels[]) {
   for (int i = 0; i < pixels_size; i++) {
     pixels[i] = 0;
   }
 }
 
-void random_pattern(int pixels[], int stride, int pixels_size, int luma) {
+void random_pattern(int pixels[], int stride, int luma) {
   int w = stride;
   int h = pixels_size / w;
   for (int y = 0; y < h; y++) {
@@ -65,15 +72,8 @@ YCbCr rgb_conveter(int r, int g, int b) {
 }
 
 int main(void) {
-  const int WIDTH = 800;
-  const int HEIGHT = 600;
   int pixels[WIDTH * HEIGHT];
-  const int pixels_size = WIDTH * HEIGHT;
-  const int FPS = 30;
-  const int DURATION = 2;
-  const int frames_count = (FPS * DURATION);
-
-  assign_zero_color(pixels, pixels_size);
+  assign_zero_color(pixels);
 
   FILE *out_put = fopen("output.y4m", "w");
   fprintf(out_put, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444\n", WIDTH, HEIGHT,
