@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -92,8 +93,8 @@ int main(void)
   fprintf(out_put, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444\n", WIDTH, HEIGHT,
           frames_count);
 
-  YCbCr ycbcr = rgb_conveter(255, 0, 0);
-  for (int j = 0; j < frames_count; j++)
+  YCbCr ycbcr = rgb_conveter(138, 43, 226);
+  for (int frame = 0; frame < frames_count; frame++)
   {
     fprintf(out_put, "FRAME\n");
     for (int j = 0; j < pixels_size; j++)
@@ -111,6 +112,10 @@ int main(void)
       char pixels[] = {ycbcr.cr};
       fwrite(pixels, 1, 1, out_put);
     }
+
+    float progess = round((float)frame / frames_count * 100);
+    printf("%f%%\r", progess); // Need fprintf because of flushing the stdout
+    fflush(stdout);
   }
 
   fclose(out_put);
