@@ -5,8 +5,8 @@
 #define HEIGHT 600
 #define FPS 30
 #define DURATION 2
-#define frames_count (FPS * DURATION)
-#define pixels_size (WIDTH * HEIGHT)
+#define FRAMES_COUNT (FPS * DURATION)
+#define PIXELS_SIZE (WIDTH * HEIGHT)
 
 typedef struct
 {
@@ -16,12 +16,12 @@ typedef struct
 void save_ppm_file(int pixels[], int stride)
 {
   int w = stride;
-  int h = pixels_size / stride;
+  int h = PIXELS_SIZE / stride;
   FILE *out_put = fopen("output.ppm", "w");
   const int buffer_size = 3;
 
   fprintf(out_put, "P6\n%i %i 255\n", w, h);
-  for (int i = 0; i < pixels_size; i++)
+  for (int i = 0; i < PIXELS_SIZE; i++)
   {
     char buffer[] = {
         (pixels[i] >> 8 * 2) & 0xFF,
@@ -37,7 +37,7 @@ void save_ppm_file(int pixels[], int stride)
 void uv_gradient_pattern(int stride, int pixels[])
 {
   int width = stride;
-  int height = pixels_size / stride;
+  int height = PIXELS_SIZE / stride;
   for (int y = 0; y < height; y++)
   {
     for (int x = 0; x < width; x++)
@@ -53,7 +53,7 @@ void uv_gradient_pattern(int stride, int pixels[])
 
 void assign_zero_color(int pixels[])
 {
-  for (int i = 0; i < pixels_size; i++)
+  for (int i = 0; i < PIXELS_SIZE; i++)
   {
     pixels[i] = 0;
   }
@@ -62,7 +62,7 @@ void assign_zero_color(int pixels[])
 void random_pattern(int pixels[], int stride, int luma)
 {
   int w = stride;
-  int h = pixels_size / w;
+  int h = PIXELS_SIZE / w;
   for (int y = 0; y < h; y++)
   {
     for (int x = 0; x < w; x++)
@@ -91,29 +91,29 @@ int main(void)
 
   FILE *out_put = fopen("output.y4m", "w");
   fprintf(out_put, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444\n", WIDTH, HEIGHT,
-          frames_count);
+          FRAMES_COUNT);
 
   YCbCr ycbcr = rgb_conveter(138, 43, 226);
-  for (int frame = 0; frame < frames_count; frame++)
+  for (int frame = 0; frame < FRAMES_COUNT; frame++)
   {
     fprintf(out_put, "FRAME\n");
-    for (int j = 0; j < pixels_size; j++)
+    for (int j = 0; j < PIXELS_SIZE; j++)
     {
       char pixels[] = {ycbcr.y};
       fwrite(pixels, 1, 1, out_put);
     }
-    for (int j = 0; j < pixels_size; j++)
+    for (int j = 0; j < PIXELS_SIZE; j++)
     {
       char pixels[] = {ycbcr.cb};
       fwrite(pixels, 1, 1, out_put);
     }
-    for (int j = 0; j < pixels_size; j++)
+    for (int j = 0; j < PIXELS_SIZE; j++)
     {
       char pixels[] = {ycbcr.cr};
       fwrite(pixels, 1, 1, out_put);
     }
 
-    float progess = round((float)frame / frames_count * 100);
+    float progess = round((float)frame / FRAMES_COUNT * 100);
     printf("%f%%\r", progess); // Need fprintf because of flushing the stdout
     fflush(stdout);
   }
