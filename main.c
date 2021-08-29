@@ -12,6 +12,19 @@ typedef struct {
   int y, cb, cr;
 } YCbCr;
 
+typedef struct {
+  int rx, ry, rw, rh;
+} Rect;
+
+Rect vrect(int rx, int ry, int rw, int rh) {
+  return (Rect){
+      .rx = rx,
+      .ry = ry,
+      .rw = rw,
+      .rh = rh,
+  };
+}
+
 YCbCr rgb_conveter(int r, int g, int b) {
   return (YCbCr){
       .y = 16 + (65.738 * r + 129.057 * g + 25.064 * b) / 256,
@@ -20,11 +33,27 @@ YCbCr rgb_conveter(int r, int g, int b) {
   };
 }
 
+void fill_rect_rgb(char canvas[], Rect rect, int color) {
+  for (int dy = 0; dy < rect.rh; dy++) {
+    for (int dx = 0; dx < rect.rw; dx++) {
+      int x = rect.rx + dx;
+      int y = rect.ry + dy;
+
+      if (WIDTH <= x && HEIGHT <= y) {
+        canvas[y * WIDTH + x] = color;
+      }
+    }
+  }
+}
+
 int main(void) {
+  char canvas[WIDTH * HEIGHT];
+  int color = 255;
   FILE *file = fopen("output.y4m", "w");
   fprintf(file, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444\n", WIDTH, HEIGHT,
           FRAMES_COUNT);
 
+  fill_rect_rgb(canvas, vrect(0, 0, 0, 0), color);
   YCbCr ycbcr = rgb_conveter(138, 43, 226);
   for (int frame = 0; frame < FRAMES_COUNT; frame++) {
     fprintf(file, "FRAME\n");
