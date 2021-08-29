@@ -12,12 +12,6 @@ typedef struct {
   int y, cb, cr;
 } YCbCr;
 
-void assign_zero_color(int pixels[]) {
-  for (int i = 0; i < PIXELS_SIZE; i++) {
-    pixels[i] = 0;
-  }
-}
-
 YCbCr rgb_conveter(int r, int g, int b) {
   return (YCbCr){
       .y = 16 + (65.738 * r + 129.057 * g + 25.064 * b) / 256,
@@ -27,9 +21,6 @@ YCbCr rgb_conveter(int r, int g, int b) {
 }
 
 int main(void) {
-  int pixels[WIDTH * HEIGHT];
-  assign_zero_color(pixels);
-
   FILE *out_put = fopen("output.y4m", "w");
   fprintf(out_put, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444\n", WIDTH, HEIGHT,
           FRAMES_COUNT);
