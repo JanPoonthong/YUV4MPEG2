@@ -21,24 +21,24 @@ YCbCr rgb_conveter(int r, int g, int b) {
 }
 
 int main(void) {
-  FILE *out_put = fopen("output.y4m", "w");
-  fprintf(out_put, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444\n", WIDTH, HEIGHT,
+  FILE *file = fopen("output.y4m", "w");
+  fprintf(file, "YUV4MPEG2 W%d H%d F%d:1 Ip A1:1 C444\n", WIDTH, HEIGHT,
           FRAMES_COUNT);
 
   YCbCr ycbcr = rgb_conveter(138, 43, 226);
   for (int frame = 0; frame < FRAMES_COUNT; frame++) {
-    fprintf(out_put, "FRAME\n");
+    fprintf(file, "FRAME\n");
     for (int j = 0; j < PIXELS_SIZE; j++) {
       char pixels[] = {ycbcr.y};
-      fwrite(pixels, 1, 1, out_put);
+      fwrite(pixels, 1, 1, file);
     }
     for (int j = 0; j < PIXELS_SIZE; j++) {
       char pixels[] = {ycbcr.cb};
-      fwrite(pixels, 1, 1, out_put);
+      fwrite(pixels, 1, 1, file);
     }
     for (int j = 0; j < PIXELS_SIZE; j++) {
       char pixels[] = {ycbcr.cr};
-      fwrite(pixels, 1, 1, out_put);
+      fwrite(pixels, 1, 1, file);
     }
 
     float progess = round((float)frame / FRAMES_COUNT * 100);
@@ -46,6 +46,6 @@ int main(void) {
     fflush(stdout);
   }
 
-  fclose(out_put);
+  fclose(file);
   fprintf(stdout, "Generated output.y4m\n");
 }
