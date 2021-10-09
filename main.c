@@ -54,7 +54,7 @@ int main(void) {
           FRAMES_COUNT);
 
   fill_rect_rgb(canvas, vrect(0, 0, 0, 0), color);
-  YCbCr ycbcr = rgb_conveter(138, 43, 226);
+  YCbCr ycbcr = rgb_conveter(255, 0, 0);
   for (int frame = 0; frame < FRAMES_COUNT; frame++) {
     fprintf(file, "FRAME\n");
     for (int j = 0; j < PIXELS_SIZE; j++) {
